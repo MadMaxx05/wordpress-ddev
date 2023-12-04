@@ -1,0 +1,19 @@
+{
+  "name": "test-theme",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "copy-env": "cp .env.example .env",
+    "env-prod": "sed -i 's/^VITE_ENVIRONMENT_TYPE=.*/VITE_ENVIRONMENT_TYPE=production/' .env",
+    "env-dev": "sed -i 's/^VITE_ENVIRONMENT_TYPE=.*/VITE_ENVIRONMENT_TYPE=development/' .env",
+    "dev": "yarn env-dev && vite",
+    "build": "yarn env-prod && vite build"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^4.5.1",
+    "vite": "^5.0.5",
+    "vite-plugin-live-reload": "^3.0.3",
+    "vue": "^3.3.10"
+  }
+}
