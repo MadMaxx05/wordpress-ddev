@@ -130,8 +130,6 @@ function nameless_scripts(): void
 
 	wp_enqueue_script('nameless-scripts', $script_src, [], null);
 	wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-	wp_enqueue_script('tailwindcss', 'https://cdn.tailwindcss.com?plugins=aspect-ratio');
-	wp_enqueue_script('tailwindcss-config', TEMPLATE_DIR_URI . '/source/js/utils/tailwindcss-config.js');
 
 	if (VITE_ENVIRONMENT_TYPE !== 'development') {
 		wp_enqueue_style('nameless-styles', vite_asset('source/main.js', true), [], null);
