@@ -1,8 +1,5 @@
 <?php
 
-// wp-json/nameless/v1/vacancies/items
-// wp-json/nameless/v1/vacancies/items/[id]
-
 class Vacancies_Controller extends WP_REST_Controller
 {
     public function __construct()
@@ -13,32 +10,45 @@ class Vacancies_Controller extends WP_REST_Controller
 
     public function register_routes()
     {
-        register_rest_route($this->namespace, '/' . $this->rest_base, [
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/items', [
             [
                 'methods'             => WP_REST_Server::READABLE,
                 'callback'            => [$this, 'get_items'],
                 'permission_callback' => '__return_true',
             ],
+        ]);
+
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/create', [
             [
                 'methods'             => WP_REST_Server::CREATABLE,
                 'callback'            => [$this, 'create_item'],
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
-                }
+                },
+            ],
+        ]);
+
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>\d+)', [
+            'args' => [
+                'id' => [
+                    'validate_callback' => function ($param, $request, $key) {
+                        return is_numeric($param);
+                    },
+                ],
             ],
             [
                 'methods'             => WP_REST_Server::EDITABLE,
                 'callback'            => [$this, 'update_item'],
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
-                }
+                },
             ],
             [
                 'methods'             => WP_REST_Server::DELETABLE,
                 'callback'            => [$this, 'delete_item'],
                 'permission_callback' => function () {
                     return current_user_can('delete_posts');
-                }
+                },
             ],
         ]);
     }
@@ -132,6 +142,7 @@ class Vacancies_Controller extends WP_REST_Controller
             'post_type'    => 'vacancy', // Replace with your custom post type name
             'post_title'   => isset($data['title']) ? sanitize_text_field($data['title']) : '',
             'post_content' => isset($data['content']) ? wp_kses_post($data['content']) : '',
+            'post_status'  => 'publish',
         ];
 
         // Update the custom post type item
@@ -158,16 +169,10 @@ class Vacancies_Controller extends WP_REST_Controller
         // Get the data from the request
         $data = $request->get_params();
 
-        // Check if the post ID and post type are provided
-        if (empty($data['id']) || empty($data['post_type'])) {
-            // Return an error response if the post ID or post type is missing
-            return rest_ensure_response(['error' => 'Post ID and post type are required for deleting an item.'], 400);
-        }
-
-        // Check if the provided post type matches the expected post type
-        if ($data['post_type'] !== 'vacancy') {
-            // Return an error response if the post type is invalid
-            return rest_ensure_response(['error' => 'Invalid post type for deleting an item.'], 400);
+        // Check if the post ID is provided
+        if (empty($data['id'])) {
+            // Return an error response if the post ID is missing
+            return rest_ensure_response(['error' => 'Vacancy ID is required for deleting an item.'], 400);
         }
 
         // Delete the custom post type item
