@@ -14,7 +14,7 @@ foreach ($categories as $category) {
     ];
 } ?>
 
-<div style="background-image: url('<?php echo TEMPLATE_DIR_URI . '/src/img/blog-bg.svg' ?>')" class="bg-no-repeat bg-top bg-contain bg-[#FAFBFC]">
+<div style="background-image: url('<?php echo TEMPLATE_DIR_URI . '/assets/img/blog-bg.svg' ?>')" class="bg-no-repeat bg-top bg-contain bg-[#FAFBFC]">
     <div class="mx-auto px-4 py-10 md:pt-20 md:pb-24 max-w-7xl">
         <h1 class="mb-5 text-5xl md:text-6xl text-[#111111] !leading-tight font-extrabold text-center tracking-wider">News and insights</h1>
         <div class="mb-12 mx-auto max-w-md text-lg text-[#464646] text-center">

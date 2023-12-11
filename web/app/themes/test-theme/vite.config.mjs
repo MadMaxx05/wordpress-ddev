@@ -1,16 +1,18 @@
 // View your website at your own local server
-// for example http://magnite-rebuild.test
+// for example https://wordpress-ddev.ddev.site
 
 // http://localhost:3000 is serving Vite on development
 // but accessing it directly will be empty
 
 import { defineConfig, loadEnv, normalizePath } from "vite";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 import liveReload from "vite-plugin-live-reload";
 
 import vue from "@vitejs/plugin-vue";
 import { basename, join } from "path";
 
 const themeDirName = basename(__dirname);
+const staticAssets = ["img"];
 
 // https://vitejs.dev/config
 
@@ -18,7 +20,16 @@ export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
   return defineConfig({
-    plugins: [liveReload(["*.php", "inc/**/*.php", "views/**/*.php"]), vue()],
+    plugins: [
+      viteStaticCopy({
+        targets: staticAssets.map((asset) => ({
+          src: normalizePath(join(__dirname, `./source/${asset}/*`)),
+          dest: asset,
+        })),
+      }),
+      liveReload(["*.php", "inc/**/*.php", "views/**/*.php"]),
+      vue(),
+    ],
 
     root: "",
     base:

@@ -1,4 +1,4 @@
-<section class="bg-gray-200/60">
+<section id="projects" class="bg-gray-200/60">
     <div class="max-w-7xl mx-auto py-10 md:pt-24 md:pb-20 px-4">
         <?php if (!empty($field->subtitle)) { ?>
             <span class="block mb-5 text-[#377DFF] text-xl md:text-2xl font-semibold text-center">
